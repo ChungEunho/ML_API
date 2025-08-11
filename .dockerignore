@@ -1,0 +1,42 @@
+# VCS
+.git
+.gitignore
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+.env/
+venv/
+ENV/
+
+# Python packaging
+build/
+dist/
+*.egg-info/
+
+# Logs
+*.log
+
+# Tests & artifacts
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Local temp and artifacts
+/temp/
+/test_output/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Docker build files
+Dockerfile.*
+
+# Editor
+*.swp
+*.swo

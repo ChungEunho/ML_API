@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.venv/
+venv/
+ENV/
+.env
+.env.*
+
+# Packaging
+build/
+dist/
+*.egg-info/
+
+# Tests
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE/OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Project specific
+/temp/
+/test_output/
+
+# Logs
+*.log
