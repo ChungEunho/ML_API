@@ -177,14 +177,7 @@ This project is set up for continuous deployment to Render.com.
 6.  Enable "Auto Deploy" for automatic deployments on `main` branch pushes.
 7.  (Optional) Set "Health Check Path" to `/openapi.json`.
 
----
-
-**2. GitHub Actions CD 구성 섹션 추가:**
-
-`### Docker` 섹션 또는 `### CI/CD` 새 섹션을 만들어 아래 내용을 추가합니다.
-
-```markdown
-### Continuous Deployment (CD) with GitHub Actions
+### Continuous Integration & Deployment (CI & CD) with GitHub Actions
 
 This project implements Continuous Deployment (CD) via GitHub Actions, which triggers a Render deployment after successful Continuous Integration (CI) checks.
 
@@ -199,5 +192,4 @@ This project implements Continuous Deployment (CD) via GitHub Actions, which tri
 *   If all CI checks (linting, testing, Docker image smoke build) pass successfully, a dedicated CD step will `curl` the Render Deploy Hook URL.
 *   Render then detects this trigger and initiates a new deployment of your service.
 ```
-
 ---
