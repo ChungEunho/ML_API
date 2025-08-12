@@ -156,3 +156,48 @@ MLAPI_dev/
 - The visualization image served by `GET /predict/view-image/{image_name}` is deleted after the first successful GET; a second GET returns 404 by design.
 - If you see `DeprecationWarning` from `httpx` in tests, it does not affect behavior. You can suppress it with a `pytest.ini` filter if desired.
 - For reproducible environments, consider using `conda` or `venv`, and ensure your IDE uses the same interpreter as your terminal.
+
+### Cloud Deployment with Render
+
+This project is set up for continuous deployment to Render.com.
+
+#### Setup on Render
+
+1.  Connect your GitHub repository to Render.
+2.  Choose "Web Service" and select "Docker" as the runtime.
+3.  Configure basic settings (Name, Region, Instance Type - **Standard S or higher recommended due to YOLO model size**).
+4.  Add Environment Variables:
+    *   `YOLO_CONFIG_DIR = /tmp`
+    *   (Optional) `PYTHONUNBUFFERED = 1`
+    *   (Optional) `TZ = Asia/Seoul`
+5.  Set Docker Command (full Uvicorn command with recommended options):
+    ```
+    uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 1 --timeout-keep-alive 10 --limit-concurrency 100 --proxy-headers --forwarded-allow-ips="*"
+    ```
+6.  Enable "Auto Deploy" for automatic deployments on `main` branch pushes.
+7.  (Optional) Set "Health Check Path" to `/openapi.json`.
+
+---
+
+**2. GitHub Actions CD 구성 섹션 추가:**
+
+`### Docker` 섹션 또는 `### CI/CD` 새 섹션을 만들어 아래 내용을 추가합니다.
+
+```markdown
+### Continuous Deployment (CD) with GitHub Actions
+
+This project implements Continuous Deployment (CD) via GitHub Actions, which triggers a Render deployment after successful Continuous Integration (CI) checks.
+
+**Prerequisites:**
+
+1.  Your Render Web Service must be configured with "Auto Deploy" enabled.
+2.  Add your Render Deploy Hook URL as a GitHub Repository Secret named `RENDER_DEPLOY_HOOK_URL`. (Find this URL in Render Service Settings -> Deploy Hook).
+
+**How it works:**
+
+*   Any push to the `main` branch triggers the GitHub Actions CI workflow (`.github/workflows/ci.yml`).
+*   If all CI checks (linting, testing, Docker image smoke build) pass successfully, a dedicated CD step will `curl` the Render Deploy Hook URL.
+*   Render then detects this trigger and initiates a new deployment of your service.
+```
+
+---
