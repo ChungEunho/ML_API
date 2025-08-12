@@ -38,3 +38,19 @@ jobs:
       - name: Build Docker image (smoke)
         run: |
           docker build -t mlapi:ci .
+
+  deploy-to-render:
+    # deploy-to-render 잡은 build-test-lint 잡이 성공했을 때만 실행
+    needs: build-test-lint
+    runs-on: ubuntu-latest
+    if: success() && github.ref == 'refs/heads/main' # build-test-lint 성공 + main 브랜치 푸시일 때만
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Trigger Render Deploy Hook
+        run: curl "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
+        env:
+          # 시크릿이 제대로 설정되었는지 확인하기 위함 (실제 값은 노출 안됨)
+          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
